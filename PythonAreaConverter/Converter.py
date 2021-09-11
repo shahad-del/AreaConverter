@@ -1,51 +1,70 @@
+from ConvertHelpers import ConvertHelpers
+
 print("Application launching...")
-print("Available options to convert from:\n a. Ropani System\n b. Bigha system\n c. Square Feet\n d. Square Meter")
 unitSystems = {
-  "a": "Ropani System",
-  "b": "Bigha System",
-  "c": "Square Meter",
-  "d": "Square Feet"
+  "1": "Ropani System",
+  "2": "Bigha System",
+  "3": "Square Meter",
+  "4": "Square Feet"
 }
 userOptions =list(unitSystems.keys())
-userInput = input("unit you want to convert from: ")
-counter = 0
-while counter < 2:
+
+ch = ConvertHelpers()
+
+
+userInput = '0'
+while userInput != '-1':
+    print("Available options to convert from:\n 1. Ropani System\n 2. Bigha system\n 3. Square Feet\n 4. Square Meter\n type -1 to exit")
+    userInput = input("unit you want to convert from: ")
     if userInput in userOptions:
         if userInput == userOptions[0]:
-            userValue = input("eg. 0-3-4-4: \n")
-            characters = list(userValue)
-            area = []
-            for i in range(len(characters)):
-                if i % 2 == 0:
-                    area.append(characters[i])
-            totalArea =''.join(area)
-            print(f"{totalArea[0]}Ropani {totalArea[1]}Aana {totalArea[2]}paisa {totalArea[3]}daam")
-            for i in totalArea:
-                ropani = int(totalArea[0]) * 256
-                aana = int(totalArea[1]) * 16
-                paisa = int(totalArea[2]) * 4
-                totalDaam = ropani + aana + paisa + int(totalArea[3])
-            totalDhur = totalDaam * 0.1174
-            bigha = 0
-            kattha = 0
-            if totalDhur > 400:
-                bigha += totalDhur // 400
-                totalDhur = totalDhur % 400
-            elif totalDhur > 20:
-                    kattha += totalDhur // 20
-                    totalDhur = totalDhur % 20
-            print(f"{bigha}bigha {kattha}kattha {totalDhur:.2f}dhur")
-            squareFeet = totalDaam * 21.39 
-            squareMeter = totalDaam * 1.987179487179487
-            print(f"{squareFeet} square feet")
-            print(f"{squareMeter} squareMeter")
+
+            areaValues = []
+            while True:
+                try:
+                    userValue = input("eg. 0-4-4-3: \n")
+                    areaValues = list(map(int, userValue.split('-')))
+                    if len(areaValues) != 4:
+                        raise Exception("Area must contain only 4 values")
+                    break
+                except:
+                    print('Invalid input. Please retry.')
+
+            ch.ConvertFromRopaniSystem(areaValues[0],areaValues[1],areaValues[2], areaValues[3])
+
 
         elif userInput == userOptions[1]:
-            userValue = input("eg. 0-4-4:")
+            areaValues = []
+            while True:
+                try:
+                    userValue = input("eg. 0-4-4: \n")
+                    areaValues = list(map(int, userValue.split('-')))
+                    if len(areaValues) != 3:
+                        raise Exception("Area must contain only 3 values")
+                    break
+                except:
+                    print('Invalid input. Please retry.')
+
+            ch.ConvertFromBighaSystem(areaValues[0],areaValues[1],areaValues[2])
+
+            
+
+
         elif userInput == userOptions[2]:
-            userValue = input("eg. 100:")
+                userValue = []
+                try:
+                    userValue = int(input("eg. 100:\n"))
+                except:
+                    print('inavlid input.please type only numbers and without space')
+                ch.converFromsquareFeet(userValue)       
         elif userInput == userOptions[3]:
-            userValue = input("eg. 200:")
+            userValue = []
+            try:
+                userValue = input("eg. 200:\n")
+            except:
+                print('inavlid input.please type only numbers and without space')
+            ch.converFromsquareMeter(userValue)   
+
     else:
-       print("please enter valid option")
-       break
+        if userInput != '-1':
+            print("please enter valid option")
